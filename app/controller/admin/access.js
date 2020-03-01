@@ -45,7 +45,7 @@ class AccessController extends BaseController {
     var module_id = addResult.module_id;
 
     //菜单  或者操作
-    if (module_id) {
+    if (module_id!=0) {
       addResult.module_id = this.app.mongoose.Types.ObjectId(module_id); //调用mongoose里面的方法把字符串转换成ObjectId
     }
     var access = new this.ctx.model.Access(addResult);
