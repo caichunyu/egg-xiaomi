@@ -22,7 +22,7 @@ class AccessController extends BaseController {
         }
       }
     ])
-    console.log(result, 'result');
+    // console.log(result, 'result');
     await this.ctx.render('admin/access/index', {
       list: result
     });
@@ -54,7 +54,49 @@ class AccessController extends BaseController {
   }
 
   async edit() {
-    await this.ctx.render('admin/access/edit');
+  
+    var id=this.ctx.request.query.id;
+    //获取编辑的数据
+    var accessResult=await this.ctx.model.Access.find({"_id":id});
+    var result=await this.ctx.model.Access.find({"module_id":"0"});
+    await this.ctx.render('admin/access/edit',{
+      list:accessResult[0],
+      moduleList:result
+    }); 
   }
+
+  async doEdit(){
+    console.log(this.ctx.request.body);
+    /*
+    { 
+      id: '5b8e4422b3cc641f4894d7bc',
+      _csrf: '8F3tGQd8-w1HtBpsyUbnBSQY5Up7OOqHXYSY',
+      module_name: '权限管理111',
+      type: '3',
+      action_name: '增加权限1',
+      url: '/admin/access/add',
+      module_id: '5b8e3836f71aad20249c2f98',
+      sort: '100',
+      description: '增加权限---操作1111' }
+    */
+    var updateResult=this.ctx.request.body;
+    var id=updateResult.id;
+    var module_id=updateResult.module_id;
+
+    //菜单  或者操作
+    if(module_id!=0){
+
+      updateResult.module_id=this.app.mongoose.Types.ObjectId(module_id);    //调用mongoose里面的方法把字符串转换成ObjectId
+
+    }
+
+    var result=await this.ctx.model.Access.updateOne({"_id":id},updateResult);
+
+    await this.success('/admin/access','修改权限成功');
+    
+
+  }
+
 }
+
 module.exports = AccessController;
