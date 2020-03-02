@@ -12,15 +12,27 @@ module.exports = (options,app) => {
         ctx.state.csrf=ctx.csrf;   //全局变量
 
         ctx.state.prevPage =ctx.request.headers['referer'];   //上一页的地址
-
-        //     /admin/verify?mt=0.7466881301614958  转换成  /admin/verify
-
-        var pathname=url.parse(ctx.request.url).pathname; 
-        
+       
+        var pathname=url.parse(ctx.request.url).pathname;         
 
         if(ctx.session.userinfo){ 
             ctx.state.userinfo=ctx.session.userinfo;  //全局变量            
-            await next();
+            
+           
+           var hasAuth=await ctx.service.admin.checkAuth();
+
+           if(hasAuth){
+                //获取权限列表
+                ctx.state.asideList=await ctx.ser
+                vice.admin.getAuthList(ctx.session.userinfo.role_id);
+                await next();
+           }else{
+
+                ctx.body='您没有权限访问当前地址';
+           }
+
+
+
         }else{
 
             //排除不需要做权限判断的页面  /admin/verify?mt=0.7466881301614958
