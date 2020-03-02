@@ -23,8 +23,8 @@ module.exports = (options,app) => {
 
            if(hasAuth){
                 //获取权限列表
-                ctx.state.asideList=await ctx.ser
-                vice.admin.getAuthList(ctx.session.userinfo.role_id);
+                ctx.state.asideList=await ctx.service.admin.getAuthList(ctx.session.userinfo.role_id);
+
                 await next();
            }else{
 
