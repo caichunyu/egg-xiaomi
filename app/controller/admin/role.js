@@ -54,29 +54,80 @@ class RoleController extends BaseController {
       } 
 
       async auth() {
+
+        /*
+
+         1、获取全部的权限  
+
+         2、查询当前角色拥有的权限（查询当前角色的权限id） 把查找到的数据放在数组中
+
+         3、循环遍历所有的权限数据     判断当前权限是否在角色权限的数组中，   如果在角色权限的数组中：选中    如果不在角色权限的数组中不选中
+         
+        */
+
+
         var role_id=this.ctx.request.query.id;
-          var result=await this.ctx.model.Access.aggregate([
+
+        //1、获取全部的权限
+
+         var result=await this.ctx.model.Access.aggregate([
+          
+              {
+                $lookup:{
+                  from:'access',
+                  localField:'_id',
+                  foreignField:'module_id',
+                  as:'items'      
+                }      
+            },
             {
-              $lookup:{
-                from:'access',
-                localField:'_id',
-                foreignField:'module_id',
-                as:'items'      
-              }      
-          },
-          {
-              $match:{
-                "module_id":'0'
+                $match:{
+                  "module_id":'0'
+                }
+            }
+          
+          ]);
+
+        //2、查询当前角色拥有的权限（查询当前角色的权限id） 把查找到的数据放在数组中
+
+          var accessReulst=await this.ctx.model.RoleAccess.find({"role_id":role_id});
+
+          var roleAccessArray=[];
+
+          accessReulst.forEach(function(value){
+            
+            roleAccessArray.push(value.access_id.toString());
+          })
+
+
+          // console.log(roleAccessArray);
+
+          // 3、循环遍历所有的权限数据     判断当前权限是否在角色权限的数组中
+
+
+          
+          for(var i=0;i<result.length;i++){
+             
+              if(roleAccessArray.indexOf(result[i]._id.toString())!=-1){
+
+                result[i].checked=true;
+
+              }
+
+              for(var j=0;j<result[i].items.length;j++){
+
+                if(roleAccessArray.indexOf(result[i].items[j]._id.toString())!=-1){
+
+                  result[i].items[j].checked=true;
+                }                      
               }
           }
-        ])
-        // console.log(result,'res');
-        
-        await this.ctx.render('admin/role/auth',{
-            list:result,
-            role_id:role_id
-          });
-    }
+          console.log(result);
+          await this.ctx.render('admin/role/auth',{
+              list:result,
+              role_id:role_id
+            });
+      }
 
     async doAuth() {
       /*
