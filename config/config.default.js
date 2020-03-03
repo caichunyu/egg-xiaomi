@@ -6,9 +6,11 @@ module.exports = appInfo => {
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1534304805936_5738';
 
+  config.uploadDir='app/public/admin/upload';
+  
   config.session={
     key:'SESSION_ID',
-    maxAge:864000,
+    maxAge:86400000,
     httpOnly: true,
     encrypt: true,
     renew: true //  延长会话有效期       

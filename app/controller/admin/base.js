@@ -88,6 +88,40 @@ async  changeStatus() {
   }
 
 }
+
+async  editNum() {
+
+  var model=this.ctx.request.query.model; /*数据库表 Model*/
+  var attr=this.ctx.request.query.attr; /*更新的属性 如:sort */
+  var id=this.ctx.request.query.id; /*更新的 id*/
+  var num=this.ctx.request.query.num; /*数量*/
+
+  var result=await this.ctx.model[model].find({"_id":id});       
+  
+  if(result.length>0){
+
+    var json={/*es6 属性名表达式*/
+
+      [attr]:num
+    }
+
+    console.log(result,num,model,'执行更新操作');
+    
+    //执行更新操作
+    var updateResult=await this.ctx.model[model].updateOne({"_id":id},json);       
+
+    if(updateResult){
+      this.ctx.body={"message":'更新成功',"success":true};
+    }else{
+
+      this.ctx.body={"message":'更新失败',"success":false};
+    }
+  }else{
+    //接口
+    this.ctx.body={"message":'更新失败,参数错误',"success":false};
+  }
+}
+
  
 }
 

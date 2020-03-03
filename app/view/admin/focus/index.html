@@ -4,49 +4,83 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-2">
-            <%- include ../public/page_aside.html %>        		
+            <%- include ../public/page_aside.html %>
+			
           
         </div>
         <div class="col-sm-10">
-          
             <div class="panel panel-default">              
-			    <div class="panel-heading">
-                  上传图片 -单个图片/文件
-                </div>
-                <div class="panel-body">
-                    <div class="table-responsive input-form">
-                        <form action="/admin/focus/doSingleUpload?_csrf=<%=csrf%>" method="post" enctype="multipart/form-data">
-                            <ul>
+                    <div class="panel-heading">
+                        轮播图列表
+                    </div>
+                    <div class="panel-body">
+            <!--
+                列表展示
+            -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr class="th">
+                                <th>名称</th>
+                                <th>分类</th>
+                                <th>图片</th>
+                                <th>跳转地址</th>    
+                                
+                                <th class="text-center">排序</th> 
+                                <th class="text-center">状态</th>                                             
+                            
+                                <th class="text-center">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <%for(var i=0;i<list.length;i++){%>
+                                        <tr>
+                                                <td><%=list[i].title%></td>   
+                                                
+                                                <td>
 
+                                                   <%if(list[i].type==1){%>
 
-                                <li>  图片名称: <input type="text" name="title"/></li>
+                                                            网站
 
-                               
-                                <li>  文件: <input type="file" name="pic"/></li>
+                                                    <%}else if(list[i].type==2){%>
+                                                        App
 
-                                <!-- <li>  url: <input type="text" name="url"/></li> -->
+                                                    <%}else if(list[i].type==3){%>
+                                                        小程序
+                                                    <%}else {%>
+                                                   
+                                                            未知类型
+                                                           
+                                                    <%}%>
 
-                                <!-- 上传文件必须在所有其他的 fields 后面，否则在拿到文件流时可能还获取不到 fields。 -->
-                                <li>
-                                    图片描述:
-                                    <textarea name="description" id="" cols="60" rows="8"></textarea>
-                                </li>
+                                                </td>   
+                                                <td><img class="pic" src="<%=list[i].focus_img%>" /></td>
+                                                <td><%=list[i].link%></td>
 
-                                <li>
-                                    <br/>
-                                    <button type="submit" class="btn btn-primary">提交</button>
-                                </li>
+                                                <td class="text-center"><span onclick="app.editNum(this,'Focus','sort','<%=list[i]._id%>')"><%=list[i].sort%></span></td>
+                                                <td class="text-center">
 
-                            </ul>
+                                                   <%if(list[i].status==1){%>
 
+                                                            <img src="/public/admin/images/yes.gif" onclick="app.changeStatus(this,'Focus','status','<%=list[i]._id%>')" />
 
-                        </form>
+                                                    <%}else{%>
+                                                            <img src="/public/admin/images/no.gif" onclick="app.changeStatus(this,'Focus','status','<%=list[i]._id%>')" />
+                                                    <%}%>
+
+                                                </td>                                                                    
+                                                <td class="text-center">　<a href="/admin/focus/edit?id=<%=list[i]._id%>">修改</a>　<a class="delete" href="/admin/delete?model=Focus&id=<%=list[i]._id%>">删除</a></td>
+                                            </tr>
+                                
+    
+                                <%}%>
+
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-
-
             </div>
-
         </div>
     </div>
 </div>

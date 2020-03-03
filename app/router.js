@@ -16,6 +16,7 @@ module.exports = app => {
   router.get('/admin/verify', controller.admin.base.verify);
   router.get('/admin/delete', controller.admin.base.delete);
   router.get('/admin/changeStatus', controller.admin.base.changeStatus);
+  router.get('/admin/editNum', controller.admin.base.editNum);
 
   router.get('/admin/manager', controller.admin.manager.index);
   router.get('/admin/manager/add', controller.admin.manager.add);
@@ -40,8 +41,9 @@ module.exports = app => {
 
   //上传图片演示
   router.get('/admin/focus', controller.admin.focus.index);
-  router.get('/admin/focus/multi', controller.admin.focus.multi);
-  router.post('/admin/focus/doSingleUpload', controller.admin.focus.doSingleUpload);  
-  router.post('/admin/focus/doMultiUpload', controller.admin.focus.doMultiUpload); 
+  router.get('/admin/focus/add', controller.admin.focus.add);
+  router.get('/admin/focus/edit', controller.admin.focus.edit);
+  router.post('/admin/focus/doEdit', controller.admin.focus.doEdit);
+  router.post('/admin/focus/doAdd', controller.admin.focus.doAdd);  
 
 };
