@@ -10,7 +10,7 @@ class HomeController extends Controller {
     await this.ctx.render('index/home.nj',{
 
       username:'我是nj模板'
-    });
+    }); 
   }
 }
 module.exports = HomeController;
