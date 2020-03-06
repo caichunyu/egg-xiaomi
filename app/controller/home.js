@@ -12,5 +12,5 @@ class HomeController extends Controller {
       username:'我是nj模板'
     }); 
   }
-} 
+}  
 module.exports = HomeController;
