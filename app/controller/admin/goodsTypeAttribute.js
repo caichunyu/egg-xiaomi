@@ -9,7 +9,11 @@ class GoodsTypeAttributeController extends BaseController {
 
         var cate_id=this.ctx.request.query.id;
 
-        console.log(cate_id);
+        // console.log(cate_id);
+
+        //获取当前的类型
+
+        var goodsType=await this.ctx.model.GoodsType.find({"_id":cate_id})
 
       //  var result=await this.ctx.model.GoodsTypeAttribute.find({"cate_id":cate_id});
 
@@ -34,7 +38,8 @@ class GoodsTypeAttributeController extends BaseController {
         await this.ctx.render('admin/goodsTypeAttribute/index',{
 
             list:result,
-            cate_id:cate_id
+            cate_id:cate_id,
+            goodsType:goodsType[0]
         });
     }
 
@@ -77,11 +82,14 @@ class GoodsTypeAttributeController extends BaseController {
 
         var id=this.ctx.query.id;
 
-        var result=await this.ctx.model.GoodsType.find({"_id":id});
+        var result=await this.ctx.model.GoodsTypeAttribute.find({"_id":id});
 
-        await this.ctx.render('admin/goodsType/edit',{
+        var goodsTypes=await this.ctx.model.GoodsType.find({});
 
-            list:result[0]
+        await this.ctx.render('admin/goodsTypeAttribute/edit',{
+
+            list:result[0],
+            goodsTypes:goodsTypes
         });
     
     } 
@@ -90,13 +98,22 @@ class GoodsTypeAttributeController extends BaseController {
     
 
         var _id=this.ctx.request.body._id;
-        var title=this.ctx.request.body.title;
-        var description= this.ctx.request.body.description;
 
-        await this.ctx.model.GoodsType.updateOne({"_id":_id},{
-            title,description
-        })
-        await this.success('/admin/goodsType','编辑类型成功');     
+        // var title=this.ctx.request.body.title;
+
+        // var cate_id=this.ctx.request.body.cate_id;
+
+        // var attr_type=this.ctx.request.body.attr_type;
+
+        // var attr_value=this.ctx.request.body.attr_value;
+
+        // console.log(this.ctx.request.body);
+       
+
+        await this.ctx.model.GoodsTypeAttribute.updateOne({"_id":_id},this.ctx.request.body);
+
+       
+        await this.success('/admin/goodsTypeAttribute?id='+this.ctx.request.body.cate_id,'修改商品类型属性成功');
 
     } 
    
