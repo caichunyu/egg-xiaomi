@@ -14,7 +14,7 @@ var app={
 		this.deleteConfirm();
 
 
-		this.resizeIframe();
+		// this.resizeIframe();
 
 	},
 
@@ -110,18 +110,7 @@ var app={
 
 
 
-
-
-
-
-
-
 	}
 }
 
 
-
-$(window).resize(function(){
-
-	app.resizeIframe();
-})
