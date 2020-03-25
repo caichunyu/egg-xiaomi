@@ -16,7 +16,7 @@ module.exports = app => {
         type: String 
       },
       pid:{
-        type:Schema.Types.Mixed  //混合类型 
+        type:Schema.Types.Mixed  //混合类型 *******************坑
       },      
       sub_title: { type: String  },          /*seo相关的标题  关键词  描述*/
       keywords: { type: String  },
